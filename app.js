@@ -63,7 +63,7 @@ async function authUserAsync(req) {
   return ok ? { ok: true, user: u } : { ok: false };
 }
 
-// ===== POST /signin（新規作成） =====
+// ===== POST /signup（新規作成） =====
 app.post("/signup", async (req, res) => {
   const { user_id, password, nickname, comment } = req.body || {};
 
@@ -233,5 +233,20 @@ app.post("/close", async (req, res) => {
 
 // ===== ヘルスチェック =====
 app.get("/health", (_req, res) => res.json({ ok: true }));
+
+(async function seedReservedUser() {
+  const user_id = "TaroYamada";
+  const password = "PaSSwd4TY";
+  if (!users.has(user_id)) {
+    const passwordHash = await bcrypt.hash(password, 10);
+    users.set(user_id, {
+      user_id,
+      passwordHash,
+      nickname: "TaroYamada", // 任意。テストはmessageのみチェックなので何でもOK
+      comment: "", // 任意
+    });
+    // console.log("[seed] reserved user created");
+  }
+})();
 
 module.exports = { app, users };
