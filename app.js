@@ -64,7 +64,7 @@ async function authUserAsync(req) {
 }
 
 // ===== POST /signin（新規作成） =====
-app.post("/signin", async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { user_id, password, nickname, comment } = req.body || {};
 
   if (!user_id || !password) {
